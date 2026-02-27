@@ -1,0 +1,30 @@
+# Create .gitignore
+New-Item .gitignore -ItemType File
+```
+
+Open the `.gitignore` file and paste this:
+```
+# Maven
+backend/target/
+backend/*.log
+
+# Frontend
+upi-frontend/node_modules/
+upi-frontend/build/
+
+# Environment
+.env
+*.env
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
