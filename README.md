@@ -1,50 +1,44 @@
-# 💳 UPI Payment Simulation System — Backend
+# 💳 UPI Payment Simulation System
 
-A production-grade Spring Boot backend simulating a UPI-like digital payment platform.
+A full-stack UPI-like payment platform built with Spring Boot and React.js, inspired by PhonePe and Google Pay.
 
 ---
 
-## 🏗️ Project Structure
+## 📸 Screenshots
 
-```
-backend/
-├── src/main/java/com/upi/payment/
-│   ├── UpiPaymentApplication.java
-│   ├── config/
-│   │   ├── SecurityConfig.java       # JWT + CORS + method security
-│   │   ├── SwaggerConfig.java        # OpenAPI 3 docs
-│   │   └── ScheduledTasks.java       # Daily limit reset cron
-│   ├── controller/
-│   │   ├── AuthController.java
-│   │   ├── TransactionController.java
-│   │   ├── WalletController.java
-│   │   ├── BankAccountController.java
-│   │   └── AdminController.java
-│   ├── entity/                       # JPA entities with auditing
-│   ├── enums/                        # TransactionStatus, UserRole, etc.
-│   ├── dto/request/                  # Validated request bodies
-│   ├── dto/response/                 # Typed response wrappers
-│   ├── repository/                   # Spring Data JPA + custom queries
-│   ├── service/impl/
-│   │   ├── AuthService.java
-│   │   ├── TransactionService.java   # ACID transfer engine
-│   │   ├── FraudDetectionService.java
-│   │   ├── WalletService.java
-│   │   ├── BankAccountService.java
-│   │   ├── AuditServiceImpl.java
-│   │   └── AdminService.java
-│   ├── security/
-│   │   ├── JwtService.java
-│   │   └── CustomUserDetailsService.java
-│   ├── filter/
-│   │   └── JwtAuthFilter.java
-│   ├── exception/
-│   │   └── GlobalExceptionHandler.java
-│   └── util/
-│       └── SecurityUtils.java
-└── src/test/
-    └── TransactionServiceTest.java
-```
+![Login](screenshots/login.png)
+![Dashboard](screenshots/dashboard.png)
+![Send Money](screenshots/send-money.png)
+![Transactions](screenshots/transactions.png)
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+---
+
+## ✨ Features
+
+- JWT Authentication with BCrypt password hashing
+- Wallet management with real-time balance tracking
+- Bank account linking and money deposits
+- P2P money transfer with ACID-compliant transactions
+- Pessimistic locking to prevent race conditions
+- Idempotency protection against duplicate payments
+- Fraud detection engine with risk scoring (0–100)
+- Admin dashboard with user management and fraud monitoring
+- Immutable audit logging
+- Swagger API documentation
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Backend | Spring Boot 3.2, Spring Security, Spring Data JPA |
+| Frontend | React.js 18, Axios |
+| Database | MySQL 8 |
+| Security | JWT, BCrypt |
+| API Docs | Swagger / OpenAPI |
+| Build | Maven, npm |
 
 ---
 
@@ -52,131 +46,78 @@ backend/
 
 - Java 17+
 - Maven 3.8+
-- MySQL 8.0+
-- Redis 7+ (optional — for caching; falls back to in-memory)
-- Docker + Docker Compose (for containerized setup)
+- MySQL 8+
+- Node.js 18+
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
-### Option A: Docker (Recommended)
-
+### 1. Clone the repository
 ```bash
-# From project root (where docker-compose.yml is)
-docker-compose up --build
+git clone https://github.com/dharu-dharanic/upi-payment-system.git
+cd upi-payment-system
 ```
 
-Starts MySQL + Redis + Spring Boot backend automatically.
+### 2. Setup Database
+```sql
+CREATE DATABASE upi_payment_db;
+```
 
-### Option B: Manual
+### 3. Run Backend
+```bash
+cd backend
+mvn spring-boot:run
+```
 
-1. **Create MySQL database:**
-   ```sql
-   CREATE DATABASE upi_payment_db;
-   ```
+> Set these environment variables before running:
+> - `DB_USERNAME` = your MySQL username
+> - `DB_PASSWORD` = your MySQL password
+> - `JWT_SECRET` = any random string (min 32 characters)
 
-2. **Set environment variables** (or edit `application.yml`):
-   ```bash
-   export DB_USERNAME=root
-   export DB_PASSWORD=yourpassword
-   export JWT_SECRET=your-256-bit-secret-key-here-minimum-32-chars
-   ```
+Backend runs at: `http://localhost:8080`
 
-3. **Run the application:**
-   ```bash
-   cd backend
-   mvn spring-boot:run
-   ```
+### 4. Run Frontend
+```bash
+cd upi-frontend
+npm install
+npm start
+```
+
+Frontend runs at: `http://localhost:3000`
 
 ---
 
 ## 📡 API Endpoints
 
-| Method | Endpoint                          | Auth | Description                     |
-|--------|-----------------------------------|------|---------------------------------|
-| POST   | `/api/v1/auth/register`           | ❌   | Register new user               |
-| POST   | `/api/v1/auth/login`              | ❌   | Login (email/phone/UPI ID)      |
-| POST   | `/api/v1/auth/refresh`            | ❌   | Refresh JWT token               |
-| POST   | `/api/v1/auth/set-upi-pin`        | ✅   | Set UPI PIN                     |
-| GET    | `/api/v1/wallet`                  | ✅   | Get wallet balance              |
-| POST   | `/api/v1/transactions/transfer`   | ✅   | P2P money transfer              |
-| POST   | `/api/v1/transactions/add-money`  | ✅   | Bank → Wallet deposit           |
-| GET    | `/api/v1/transactions/history`    | ✅   | Paginated transaction history   |
-| GET    | `/api/v1/transactions/{ref}`      | ✅   | Get transaction by reference    |
-| POST   | `/api/v1/bank-accounts`           | ✅   | Link bank account               |
-| GET    | `/api/v1/bank-accounts`           | ✅   | List linked accounts            |
-| DELETE | `/api/v1/bank-accounts/{id}`      | ✅   | Remove bank account             |
-| GET    | `/api/v1/admin/dashboard`         | 🔑   | Admin dashboard stats           |
-| GET    | `/api/v1/admin/users`             | 🔑   | List all users                  |
-| PATCH  | `/api/v1/admin/users/{id}/freeze` | 🔑   | Freeze user account             |
-| GET    | `/api/v1/admin/transactions/flagged` | 🔑  | View flagged transactions    |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/auth/register` | Register new user |
+| POST | `/api/v1/auth/login` | Login |
+| GET | `/api/v1/wallet` | Get wallet balance |
+| POST | `/api/v1/transactions/transfer` | Send money |
+| POST | `/api/v1/transactions/add-money` | Add money from bank |
+| GET | `/api/v1/transactions/history` | Transaction history |
+| GET | `/api/v1/admin/dashboard` | Admin dashboard |
+| GET | `/api/v1/admin/users` | Manage users |
 
-✅ = JWT required | 🔑 = Admin JWT required
+Full API docs: `http://localhost:8080/swagger-ui.html`
 
 ---
 
-## 📚 Swagger UI
+## 👤 Admin Setup
 
-After starting the app, open:
-```
-http://localhost:8080/swagger-ui.html
+Register normally at `/register` then run:
+```sql
+UPDATE users SET role = 'ROLE_ADMIN' WHERE email = 'your@email.com';
 ```
 
 ---
 
-## 🔒 Key Design Decisions
-
-### ACID Transactions
-The P2P transfer uses `SERIALIZABLE` isolation and **pessimistic WRITE locks** on both wallets, always acquired in ascending wallet ID order to prevent deadlocks.
-
-### Idempotency
-Every transfer request requires a client-supplied `idempotencyKey`. The server checks this before processing — duplicate submissions return the original result (HTTP 409) instead of charging twice.
-
-### Fraud Detection
-A scoring engine assigns 0–100 risk scores based on:
-- Transaction velocity (last 1 hour)
-- High-value amount threshold
-- Off-hours activity (11 PM – 4 AM)
-- Rapid repeat transfers
-
-Score ≥ 40 → flagged for review; Score ≥ 80 → auto-blocked.
-
-### Concurrency
-Handled via both optimistic locking (`@Version` on Wallet entity) and pessimistic locking (`PESSIMISTIC_WRITE` in repository queries).
-
-### Audit Logging
-Every significant action is recorded in an immutable `audit_logs` table. Written in a separate async transaction (`REQUIRES_NEW`) so audit logs survive even if the main transaction rolls back.
-
----
-
-## 🧪 Running Tests
-
-```bash
-cd backend
-mvn test
+## 📁 Project Structure
 ```
-
----
-
-## 🌱 Default Admin Account
-
-After Docker startup:
-- **Email:** `admin@upi.com`
-- **Password:** `Admin@1234`
-- **Role:** `ROLE_ADMIN`
-
----
-
-## 📦 Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Framework | Spring Boot 3.2 |
-| Security | Spring Security + JWT (JJWT) |
-| Database | MySQL 8 + Spring Data JPA |
-| Caching | Redis + Spring Cache |
-| Docs | SpringDoc OpenAPI (Swagger) |
-| Testing | JUnit 5 + Mockito |
-| Container | Docker + Docker Compose |
-| Build | Maven |
+upi-payment-system/
+├── backend/          # Spring Boot REST API
+├── upi-frontend/     # React.js frontend
+└── screenshots/      # UI screenshots
+```
