@@ -83,13 +83,6 @@ export default function LoginPage() {
           <Link to="/register" style={{ color: 'var(--accent)', fontWeight: 600 }}>Create one</Link>
         </p>
 
-        <div style={{ marginTop: 20, padding: '12px 16px', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
-          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>Demo accounts</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', lineHeight: 1.8 }}>
-            <div><span style={{ color: 'var(--accent)' }}>Admin:</span> admin@upi.com / Admin@1234</div>
-            <div style={{ marginTop: 2, fontSize: '0.75rem', color: 'var(--text-muted)' }}>Register a new user account below ↓</div>
-          </div>
-        </div>
       </div>
     </div>
   );
