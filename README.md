@@ -7,9 +7,8 @@ A full-stack UPI-like payment platform built with Spring Boot and React.js, insp
 ## 📸 Screenshots
 
 ![Login](screenshots/login.png)
+![Register](screenshots/register.png)
 ![Dashboard](screenshots/dashboard.png)
-![Send Money](screenshots/send-money.png)
-![Transactions](screenshots/transactions.png)
 ![Admin Dashboard](screenshots/admin-dashboard.png)
 
 ---
