@@ -24,7 +24,6 @@ A full-stack UPI-like payment platform built with Spring Boot and React.js, insp
 - Fraud detection engine with risk scoring (0–100)
 - Admin dashboard with user management and fraud monitoring
 - Immutable audit logging
-- Swagger API documentation
 
 ---
 
