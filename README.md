@@ -119,3 +119,15 @@ upi-payment-system/
 ├── upi-frontend/     # React.js frontend
 └── screenshots/      # UI screenshots
 ```
+
+
+## 📌 Future Enhancements
+
+- QR Code Payments
+- UPI PIN Verification
+- Notification Service
+- Transaction Analytics
+- Email Alerts
+- Redis Caching
+- Docker Deployment
+- Kubernetes Support
